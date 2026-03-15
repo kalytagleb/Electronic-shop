@@ -1,0 +1,30 @@
+body {
+  font-family: "Syne", sans-serif;
+}
+.mono {
+  font-family: "Space Mono", monospace;
+}
+.filter-body {
+  display: none;
+}
+.filter-body.open {
+  display: block;
+}
+.filter-icon-minus {
+  display: none;
+}
+.filter-open .filter-icon-plus {
+  display: none;
+}
+.filter-open .filter-icon-minus {
+  display: block;
+}
+.sort-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+}
+.sort-dropdown.open {
+  display: block;
+}
