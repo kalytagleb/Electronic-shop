@@ -51,6 +51,7 @@ function setImg(thumb, src) {
 
 document.addEventListener('click', (e) => {
   ['sortMenu', 'catMenu'].forEach((id) => {
+
     const menu = document.getElementById(id);
     if (menu && !menu.previousElementSibling.contains(e.target) && !menu.contains(e.target)) {
       menu.classList.remove('open');
