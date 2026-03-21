@@ -28,3 +28,11 @@ body {
 .sort-dropdown.open {
   display: block;
 }
+
+#mobileMenu {
+  display: none;
+}
+
+#mobileMenu.open {
+  display: flex;
+}

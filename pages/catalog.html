@@ -15,7 +15,7 @@
     <nav
       class="bg-white border-b border-gray-200 px-8 flex items-center justify-between h-16 sticky top-0 z-20"
     >
-      <div class="flex items-center gap-9">
+      <div class="hidden md:flex items-center gap-9">
         <a
           href="../home.html"
           class="font-semibold text-sm hover:opacity-60 transition-opacity"
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-6">
+      <div class="hidden md:flex items-center gap-6">
         <a
           href="#"
           class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
@@ -132,7 +132,38 @@
           >Log In</a
         >
       </div>
+
+      <button id="burgerBtn" onclick="toggleMobileMenu()" class="md:hidden flex flex-col gap-1.5" p-2>
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+      </button>
     </nav>
+
+    <div id="mobileMenu" class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4">
+      <a href="../home.html" class="text-sm font-semibold hover:opacity-60">Home</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Best Deals</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Contacts</a>
+      <div>
+        <button onclick="toggleMobileCat()" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60">
+          Categories
+          <svg id="mobileCatArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div id="mobileCatMenu" class="hidden mt-2 ml-3 flex flex-col gap-2">
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Phones</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Laptops</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Monitors</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Audio</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Accessories</a>
+        </div>
+      </div>
+      <hr class="border-gray-200" />
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Search</a>
+      <a href="cart.html" class="text-sm font-semibold hover:opacity-60">Cart</a>
+      <a href="login.html" class="text-sm font-semibold hover:opacity-60">Log In</a>
+    </div>
 
     <main class="w-full 2xl:px-16 px-8 py-8">
       <h1 class="text-3xl font-extrabold mb-6">Electronic shop</h1>
@@ -186,8 +217,8 @@
         <span class="text-sm text-gray-400 mono">15 goods</span>
       </div>
 
-      <div class="flex gap-8">
-        <aside class="w-52 shrink-0">
+      <div class="flex flex-col md:flex-row gap-8">
+        <aside class="w-full md:w-52 shrink-0">
           <h2 class="font-bold text-base mb-4">Filters</h2>
 
           <div class="border-b border-gray-200 py-3">
@@ -355,37 +386,14 @@
               </svg>
             </button>
 
-            <div id="price" class="filter-body open mt-3 space-y-2">
-              <label
-                class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600"
-              >
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Under $100
-              </label>
-              <label
-                class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600"
-              >
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                $100-$200
-              </label>
-              <label
-                class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600"
-              >
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                $200-$300
-              </label>
-              <label
-                class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600"
-              >
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                $300-$400
-              </label>
-              <label
-                class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600"
-              >
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Over $400
-              </label>
+            <div id="price" class="filter-body open mt-3">
+              <div class="flex justify-between text-xs text-gray-500 mono mb-2">
+                <span id="priceMin">$0</span>
+                <span id="priceMax">$1000</span>
+              </div>
+              <input type="range" min="0" max="1000" value="1000" step="10"
+                  class="w-full accent-black cursor-pointer"
+                  oninput="document.getElementById('priceMax').textContent = '$' + this.value"/>
             </div>
           </div>
 
@@ -460,7 +468,7 @@
               class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
             >
               <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
+                <div class="w-full h-36 sm:h-52 bg-gray-100 overflow-hidden">
                   <img
                     src="../images/iPhone11.jpg"
                     alt="iPhone 11"
