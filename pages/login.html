@@ -12,37 +12,20 @@
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body class="bg-white text-gray-900 min-h-screen flex flex-col">
-    <nav
-      class="border-b border-gray-200 px-8 flex items-center justify-between h-16 z-20"
-    >
+    <nav class="border-b border-gray-200 px-8 flex items-center justify-between h-16 z-20">
       <div class="hidden md:flex items-center gap-9">
-        <a
-          href="../home.html"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
+        <a href="../home.html" class="font-semibold text-sm hover:opacity-60 transition-opacity"
           >Home</a
         >
-        <a
-          href="#"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
-          >Best Deals</a
-        >
-        <a
-          href="#"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
-          >Contacts</a
-        >
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Best Deals</a>
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Contacts</a>
         <div class="relative">
           <button
             onclick="toggleSort('catMenu')"
             class="font-semibold text-sm flex items-center hover:opacity-60 transition-opacity"
           >
             Categories
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -55,29 +38,11 @@
             id="catMenu"
             class="sort-dropdown bg-white border border-gray-200 rounded-xl shadow-lg min-w-40 py-1 z-30"
           >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Phones</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Laptops</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Monitors</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Audio</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Phones</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Laptops</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Monitors</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Audio</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
               >Accessories</a
             >
           </div>
@@ -89,12 +54,7 @@
           href="#"
           class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
         >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -109,12 +69,7 @@
           href="cart.html"
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
         >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -124,30 +79,48 @@
           </svg>
           Cart 0
         </a>
-        <a
-          href="#"
-          class="text-sm font-semibold hover:opacity-60 transition-opacity"
-          >Log In</a
-        >
+        <a href="#" class="text-sm font-semibold hover:opacity-60 transition-opacity">Log In</a>
       </div>
 
-      <button id="burgerBtn" onclick="toggleMobileMenu()" class="md:hidden flex flex-col gap-1.5" p-2>
+      <button
+        id="burgerBtn"
+        onclick="toggleMobileMenu()"
+        class="md:hidden flex flex-col gap-1.5"
+        p-2
+      >
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
       </button>
     </nav>
 
-    <div id="mobileMenu" class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4">
+    <div
+      id="mobileMenu"
+      class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4"
+    >
       <a href="../home.html" class="text-sm font-semibold hover:opacity-60">Home</a>
       <a href="#" class="text-sm font-semibold hover:opacity-60">Best Deals</a>
       <a href="#" class="text-sm font-semibold hover:opacity-60">Contacts</a>
       <a href="#" class="text-sm font-semibold hover:opacity-60">Categories</a>
       <div>
-        <button onclick="toggleMobileCat()" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60">
+        <button
+          onclick="toggleMobileCat()"
+          class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60"
+        >
           Categories
-          <svg id="mobileCatArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          <svg
+            id="mobileCatArrow"
+            class="w-4 h-4 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </button>
         <div id="mobileCatMenu" class="hidden mt-2 ml-3 flex flex-col gap-2">
@@ -165,28 +138,18 @@
     </div>
 
     <main class="flex-1 flex flex-col items-center justify-center px-6 py-12">
-      <h1 class="text-3xl font-extrabold tracking-tight mb-8">
-        Electronic shop
-      </h1>
-      <div
-        class="w-full max-w-md border border-gray-200 rounded-2xl px-10 py-10"
-      >
-        <h2 class="text-3xl font-extrabold tracking-tight mb-1">
-          Welcome back
-        </h2>
+      <h1 class="text-3xl font-extrabold tracking-tight mb-8">Electronic shop</h1>
+      <div class="w-full max-w-md border border-gray-200 rounded-2xl px-10 py-10">
+        <h2 class="text-3xl font-extrabold tracking-tight mb-1">Welcome back</h2>
         <p class="text-sm text-gray-500 mb-8">
           No account yet?
-          <a
-            href="register.html"
-            class="font-bold text-gray-900 underline underline-offset-2"
+          <a href="register.html" class="font-bold text-gray-900 underline underline-offset-2"
             >Create one</a
           >
         </p>
 
         <div class="mb-4">
-          <label class="block text-xs font-bold uppercase tracking-widest mb-2"
-            >Email</label
-          >
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2">Email</label>
           <input
             type="email"
             placeholder="kalytagleb@gmail.com"
@@ -196,12 +159,8 @@
 
         <div class="mb-6">
           <div class="flex items-center justify-between mb-2">
-            <label class="block text-xs font-bold uppercase tracking-widest"
-              >Password</label
-            >
-            <a
-              href="#"
-              class="text-xs text-gray-400 hover:text-gray-900 transition-colors"
+            <label class="block text-xs font-bold uppercase tracking-widest">Password</label>
+            <a href="#" class="text-xs text-gray-400 hover:text-gray-900 transition-colors"
               >Forgot password?</a
             >
           </div>
@@ -220,10 +179,7 @@
 
         <div class="flex items-center gap-3 mb-6">
           <div class="flex-1 h-px bg-gray-200"></div>
-          <span
-            class="text-xs font-bold text-gray-400 uppercase tracking-widest"
-            >or</span
-          >
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">or</span>
           <div class="flex-1 h-px bg-gray-200"></div>
         </div>
 

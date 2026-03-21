@@ -1,8 +1,8 @@
 body {
-  font-family: "Syne", sans-serif;
+  font-family: 'Syne', sans-serif;
 }
 .mono {
-  font-family: "Space Mono", monospace;
+  font-family: 'Space Mono', monospace;
 }
 .filter-body {
   display: none;

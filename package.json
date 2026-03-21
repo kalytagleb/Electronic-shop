@@ -1,0 +1,25 @@
+{
+  "name": "wtech",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:check": "npx prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalytagleb/WTECH-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalytagleb/WTECH-Project/issues"
+  },
+  "homepage": "https://github.com/kalytagleb/WTECH-Project#readme",
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}

@@ -16,21 +16,11 @@
       class="bg-white border-b border-gray-200 px-8 flex items-center justify-between h-16 sticky top-0 z-20"
     >
       <div class="hidden md:flex items-center gap-9">
-        <a
-          href="#"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
-          >Home</a
-        >
-        <a
-          href="#deals"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Home</a>
+        <a href="#deals" class="font-semibold text-sm hover:opacity-60 transition-opacity"
           >Best Deals</a
         >
-        <a
-          href="#"
-          class="font-semibold text-sm hover:opacity-60 transition-opacity"
-          >Contacts</a
-        >
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Contacts</a>
 
         <!-- Categories dropdown-->
         <div class="relative">
@@ -39,12 +29,7 @@
             class="font-semibold text-sm flex items-center hover:opacity-60 transition-opacity"
           >
             Categories
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -62,24 +47,10 @@
               class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
               >Phones</a
             >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Laptops</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Monitors</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Audio</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Laptops</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Monitors</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Audio</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
               >Accessories</a
             >
           </div>
@@ -91,12 +62,7 @@
           href="#"
           class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
         >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -111,12 +77,7 @@
           href="pages/cart.html"
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
         >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -126,29 +87,49 @@
           </svg>
           Cart 0
         </a>
-        <a
-          href="pages/login.html"
-          class="text-sm font-semibold hover:opacity-60 transition-opacity"
+        <a href="pages/login.html" class="text-sm font-semibold hover:opacity-60 transition-opacity"
           >Log In</a
         >
       </div>
 
-      <button id="burgerBtn" onclick="toggleMobileMenu()" class="md:hidden flex flex-col gap-1.5" p-2>
+      <button
+        id="burgerBtn"
+        onclick="toggleMobileMenu()"
+        class="md:hidden flex flex-col gap-1.5"
+        p-2
+      >
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
       </button>
     </nav>
 
-    <div id="mobileMenu" class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4">
+    <div
+      id="mobileMenu"
+      class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4"
+    >
       <a href="#" class="text-sm font-semibold hover:opacity-60">Home</a>
       <a href="#" class="text-sm font-semibold hover:opacity-60">Best Deals</a>
       <a href="#" class="text-sm font-semibold hover:opacity-60">Contacts</a>
       <div>
-        <button onclick="toggleMobileCat()" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60">
+        <button
+          onclick="toggleMobileCat()"
+          class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60"
+        >
           Categories
-          <svg id="mobileCatArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          <svg
+            id="mobileCatArrow"
+            class="w-4 h-4 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </button>
         <div id="mobileCatMenu" class="hidden mt-2 ml-3 flex flex-col gap-2">
@@ -181,25 +162,17 @@
       </section>
 
       <section>
-        <h2 class="text-xl font-extrabold tracking-tight text-center mb-6">
-          Shop by Category
-        </h2>
+        <h2 class="text-xl font-extrabold tracking-tight text-center mb-6">Shop by Category</h2>
         <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
           <a
             href="pages/catalog.html"
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="w-full h-28 bg-gray-100 overflow-hidden">
-              <img
-                src="images/iPhone14_pro.jpg"
-                alt=""
-                class="w-full h-full object-cover"
-              />
+              <img src="images/iPhone14_pro.jpg" alt="" class="w-full h-full object-cover" />
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Phones</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Phones</span>
             </div>
           </a>
 
@@ -207,9 +180,7 @@
             href="#"
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
-            <div
-              class="w-full h-28 bg-gray-100 flex items-center justify-center"
-            >
+            <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
               <svg
                 class="w-10 h-10 opacity-20"
                 fill="none"
@@ -221,9 +192,7 @@
               </svg>
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Laptops</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Laptops</span>
             </div>
           </a>
 
@@ -231,9 +200,7 @@
             href="#"
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
-            <div
-              class="w-full h-28 bg-gray-100 flex items-center justify-center"
-            >
+            <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
               <svg
                 class="w-10 h-10 opacity-20"
                 fill="none"
@@ -245,9 +212,7 @@
               </svg>
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Monitors</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Monitors</span>
             </div>
           </a>
 
@@ -255,24 +220,18 @@
             href="#"
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
-            <div
-              class="w-full h-28 bg-gray-100 flex items-center justify-center"
-            >
+            <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
               <svg
                 class="w-10 h-10 opacity-20"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
-                  d="M9 19V6l12-3v13M9 19c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"
-                />
+                <path d="M9 19V6l12-3v13M9 19c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z" />
               </svg>
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Audio</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Audio</span>
             </div>
           </a>
 
@@ -280,9 +239,7 @@
             href="#"
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
-            <div
-              class="w-full h-28 bg-gray-100 flex items-center justify-center"
-            >
+            <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
               <svg
                 class="w-10 h-10 opacity-20"
                 fill="none"
@@ -294,9 +251,7 @@
               </svg>
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Accessories</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Accessories</span>
             </div>
           </a>
 
@@ -304,9 +259,7 @@
             href="#deals"
             class="bg-black text-white border border-black rounded-xl overflow-hidden hover:opacity-80 transition-all duration-200"
           >
-            <div
-              class="w-full h-28 bg-gray-100 flex items-center justify-center"
-            >
+            <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
               <svg
                 class="w-10 h-10 opacity-20"
                 fill="none"
@@ -318,9 +271,7 @@
               </svg>
             </div>
             <div class="p-2 text-center">
-              <span class="text-xs font-bold uppercase tracking-wider"
-                >Best Deals</span
-              >
+              <span class="text-xs font-bold uppercase tracking-wider">Best Deals</span>
             </div>
           </a>
         </div>
@@ -328,29 +279,21 @@
 
       <section id="deals">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-extrabold tracking-tight">
-            Featured Products
-          </h2>
+          <h2 class="text-xl font-extrabold tracking-tight">Featured Products</h2>
           <a
             href="pages/catalog.html"
             class="text-sm font-semibold text-gray-400 hover:text-gray-900 transition-colors"
             >View all-></a
           >
         </div>
-        <div
-          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-        >
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           <a
-            href="#"
+            href="pages/product.html"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src="images/iPhone14_pro.jpg"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img src="images/iPhone14_pro.jpg" alt="" class="w-full h-full object-cover" />
               </div>
               <span
                 class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -359,12 +302,7 @@
               <button
                 class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
               >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -375,24 +313,18 @@
               </button>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">
-                iPhone 14 Pro 256 GB
-              </p>
+              <p class="text-sm font-semibold text-gray-900">iPhone 14 Pro 256 GB</p>
               <p class="text-sm text-gray-500 mt-1 mono">$995.00</p>
             </div>
           </a>
 
           <a
-            href="#"
+            href="pages/product.html"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src="images/iPhone13.jpg"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img src="images/iPhone13.jpg" alt="" class="w-full h-full object-cover" />
               </div>
               <span
                 class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -401,12 +333,7 @@
               <button
                 class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
               >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -417,24 +344,18 @@
               </button>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">
-                iPhone 13 128GB Gold
-              </p>
+              <p class="text-sm font-semibold text-gray-900">iPhone 13 128GB Gold</p>
               <p class="text-sm text-gray-500 mt-1 mono">$380.00</p>
             </div>
           </a>
 
           <a
-            href="#"
+            href="pages/product.html"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src="images/iPhone12_pro.jpg"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img src="images/iPhone12_pro.jpg" alt="" class="w-full h-full object-cover" />
               </div>
               <span
                 class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -443,12 +364,7 @@
               <button
                 class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
               >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -459,24 +375,18 @@
               </button>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">
-                iPhone 12 Pro 128GB Blue
-              </p>
+              <p class="text-sm font-semibold text-gray-900">iPhone 12 Pro 128GB Blue</p>
               <p class="text-sm text-gray-500 mt-1 mono">$348.00</p>
             </div>
           </a>
 
           <a
-            href="#"
+            href="pages/product.html"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src="images/iPhone11_pro.jpg"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img src="images/iPhone11_pro.jpg" alt="" class="w-full h-full object-cover" />
               </div>
               <span
                 class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -485,12 +395,7 @@
               <button
                 class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
               >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -501,24 +406,18 @@
               </button>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">
-                iPhone 11 Pro 64GB Black
-              </p>
+              <p class="text-sm font-semibold text-gray-900">iPhone 11 Pro 64GB Black</p>
               <p class="text-sm text-gray-500 mt-1 mono">$152.50</p>
             </div>
           </a>
 
           <a
-            href="#"
+            href="pages/product.html"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src="images/iPhone11.jpg"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img src="images/iPhone11.jpg" alt="" class="w-full h-full object-cover" />
               </div>
               <span
                 class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -527,12 +426,7 @@
               <button
                 class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
               >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -543,9 +437,7 @@
               </button>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">
-                iPhone 11 64GB White
-              </p>
+              <p class="text-sm font-semibold text-gray-900">iPhone 11 64GB White</p>
               <p class="text-sm text-gray-500 mt-1 mono">$128.00</p>
             </div>
           </a>
