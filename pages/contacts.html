@@ -44,26 +44,28 @@
         </div>
       </div>
 
-      <div class="relative flex items-center">
-        <div
-          id="searchWrapper"
-          class="absolute right-[100%] mr-3 opacity-0 pointer-events-none translate-x-4 transition-all duration-300 ease-in-out"
-        >
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search products..."
-            class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors w-48 xl:w-64 shadow-sm"
-          />
-        </div>
+      <div class="hidden md:flex items-center gap-6">
+        <div class="relative flex items-center">
+          <div
+            id="searchWrapper"
+            class="absolute right-[100%] mr-3 opacity-0 pointer-events-none translate-x-4 transition-all duration-300 ease-in-out"
+          >
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search products..."
+              class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors w-48 xl:w-64 shadow-sm"
+            />
+          </div>
 
-        <button
-          id="searchToggleBtn"
-          class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity bg-white z-10 relative"
-        >
-          <img src="../resources/search.svg" class="w-4 h-4" alt="" />
-          Search
-        </button>
+          <button
+            id="searchToggleBtn"
+            class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity bg-white z-10 relative"
+          >
+            <img src="../resources/search.svg" class="w-4 h-4" alt="" />
+            Search
+          </button>
+        </div>
         <a
           href="./cart.html"
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
@@ -118,123 +120,5 @@
       <a href="#" class="text-sm font-semibold hover:opacity-60">Log In</a>
     </div>
     <script src="../script.js"></script>
-    <main class="max-w-6xl mx-auto px-8 py-12 md:py-20 w-full flex-1">
-      <div class="text-center mb-12 md:mb-16">
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Get in Touch</h1>
-        <p class="text-gray-500 max-w-lg mx-auto text-sm md:text-base">
-          Have a question about our products, your order, or just want to say hi? Drop us a message
-          below.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
-        <div class="bg-white p-6 md:p-8 border border-gray-200 rounded-2xl shadow-sm">
-          <h2 class="text-xl font-bold mb-6">Send a Message</h2>
-          <form id="contactForm" class="flex flex-col gap-5">
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2">Name</label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                required
-                class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors"
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2">Email</label>
-              <input
-                type="email"
-                placeholder="john@example.com"
-                required
-                class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors"
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2">Message</label>
-              <textarea
-                rows="4"
-                placeholder="How can we help you?"
-                required
-                class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors resize-none"
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              class="w-full bg-black text-white font-bold text-sm py-4 rounded-xl hover:opacity-80 transition-opacity mt-2"
-            >
-              Send Message
-            </button>
-          </form>
-        </div>
-
-        <div class="flex flex-col gap-8">
-          <div>
-            <h2 class="block text-xs font-bold uppercase tracking-widest mb-4 text-gray-400">
-              Store Info
-            </h2>
-            <div class="flex flex-col gap-4">
-              <div class="flex items-start gap-4">
-                <div
-                  class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0"
-                >
-                  <span class="font-bold text-lg">W</span>
-                </div>
-                <div>
-                  <p class="font-bold text-lg">WTECH Store</p>
-                  <p class="text-sm text-gray-500 mt-1">
-                    123 Tech Avenue, Silicon Valley<br />CA 94025, United States
-                  </p>
-                </div>
-              </div>
-              <div class="flex items-center gap-4 mt-2">
-                <svg
-                  class="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  ></path>
-                </svg>
-                <p class="text-sm font-mono">+1 (800) 123-4567</p>
-              </div>
-              <div class="flex items-center gap-4">
-                <svg
-                  class="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  ></path>
-                </svg>
-                <p class="text-sm font-mono">support@wtech.com</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="w-full h-64 bg-gray-200 rounded-2xl overflow-hidden border border-gray-200">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.63929062107!2d-122.08624618469247!3d37.42199987982517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425def45%3A0x8a5019eda49de706!2sGoogleplex!5e0!3m2!1sen!2ssk!4v1682345678901!5m2!1sen!2ssk"
-              width="100%"
-              height="100%"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            >
-            </iframe>
-          </div>
-        </div>
-      </div>
-    </main>
   </body>
 </html>
