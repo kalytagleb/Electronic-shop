@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contect page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="bg-white text-gray-900">
+    <nav class="border-b border-gray-200 px-8 flex items-center justify-between h-16 z-20">
+      <div class="hidden md:flex items-center gap-9">
+        <a href="../index.html" class="font-semibold text-sm hover:opacity-60 transition-opacity"
+          >Home</a
+        >
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Best Deals</a>
+        <a href="#" class="font-semibold text-sm hover:opacity-60 transition-opacity">Contacts</a>
+        <div class="relative">
+          <button
+            onclick="toggleSort('catMenu')"
+            class="font-semibold text-sm flex items-center hover:opacity-60 transition-opacity"
+          >
+            Categories
+            <img src="../resources/chevron-down.svg" class="w-4 h-4" alt="Search" />
+          </button>
+          <div
+            id="catMenu"
+            class="sort-dropdown bg-white border border-gray-200 rounded-xl shadow-lg min-w-40 py-1 z-30"
+          >
+            <a href="catalog.html" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
+              >Phones</a
+            >
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Laptops</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Monitors</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Audio</a>
+            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
+              >Accessories</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center gap-6">
+        <a
+          href="#"
+          class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
+        >
+          <img src="../resources/search.svg" class="w-4 h-4" alt="" />
+          Search
+        </a>
+
+        <a
+          href="cart.html"
+          class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
+        >
+          <img src="../resources/cart.svg" class="w-4 h-4" alt="" />
+          Cart 0
+        </a>
+        <a href="#" class="text-sm font-semibold hover:opacity-60 transition-opacity">Log In</a>
+      </div>
+
+      <button
+        id="burgerBtn"
+        onclick="toggleMobileMenu()"
+        class="md:hidden flex flex-col gap-1.5"
+        p-2
+      >
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+        <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
+      </button>
+    </nav>
+
+    <div
+      id="mobileMenu"
+      class="md:hidden bg-white border-b border-gray-200 px-8 py-4 flex flex-col gap-4"
+    >
+      <a href="../index.html" class="text-sm font-semibold hover:opacity-60">Home</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Best Deals</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Contacts</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Categories</a>
+      <div>
+        <button
+          onclick="toggleMobileCat()"
+          class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60"
+        >
+          Categories
+          <img src="../resources/chevron-down.svg" class="w-4 h-4" alt="Search" />
+        </button>
+        <div id="mobileCatMenu" class="hidden mt-2 ml-3 flex flex-col gap-2">
+          <a href="catalog.html" class="text-sm text-gray-600 hover:text-black">Phones</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Laptops</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Monitors</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Audio</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-black">Accessories</a>
+        </div>
+      </div>
+      <hr class="border-gray-200" />
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Search</a>
+      <a href="cart.html" class="text-sm font-semibold hover:opacity-60">Cart</a>
+      <a href="#" class="text-sm font-semibold hover:opacity-60">Log In</a>
+    </div>
+    <script src="../script.js"></script>
+  </body>
+</html>
