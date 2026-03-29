@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="../style.css" />
   </head>
   <body class="bg-gray-50 text-gray-900 flex min-h-screen">
     <aside
@@ -27,7 +27,7 @@
       </nav>
       <div class="p-4 border-t border-gray-200">
         <a
-          href="../../index.html"
+          href="../index.html"
           class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-500 hover:text-black transition-colors"
         >
           Back to Store
@@ -43,7 +43,7 @@
         <div class="flex items-center gap-4">
           <span class="text-sm font-semibold text-gray-500">Admin User</span>
           <a
-            href="../login.html"
+            href="login.html"
             class="text-sm font-bold underline hover:opacity-60 transition-opacity"
             >Log out</a
           >
@@ -86,7 +86,7 @@
                     class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shrink-0 flex items-center justify-center"
                   >
                     <img
-                      src="../../images/iPhone14_pro.jpg"
+                      src="../images/iPhone14_pro.jpg"
                       alt="iPhone 14 Pro"
                       class="w-full h-full object-cover"
                     />
@@ -96,16 +96,19 @@
                 <td class="p-4 font-semibold text-gray-500">Phones</td>
                 <td class="p-4 font-bold mono">$995.00</td>
                 <td class="p-4 text-right">
-                  <a
-                    href="admin-product-form.html"
-                    class="text-sm font-bold text-gray-400 hover:text-black transition-colors mr-3"
-                    >Edit</a
-                  >
-                  <button
-                    class="text-sm font-bold text-red-400 hover:text-red-600 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  <div class="flex items-center justify-end gap-4">
+                    <a
+                      href="admin-product-form.html"
+                      class="text-sm font-bold text-gray-400 hover:text-black transition-colors"
+                      >Edit</a
+                    >
+                    <button
+                      class="text-red-400 hover:text-red-600 transition-colors"
+                      title="Delete"
+                    >
+                      <img src="../resources/trash.svg" class="w-5 h-5" alt="Delete" />
+                    </button>
+                  </div>
                 </td>
               </tr>
               <tr class="hover:bg-gray-50 transition-colors">
@@ -114,7 +117,7 @@
                     class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shrink-0 flex items-center justify-center"
                   >
                     <img
-                      src="../../images/iPhone13.jpg"
+                      src="../images/iPhone13.jpg"
                       alt="iPhone 13"
                       class="w-full h-full object-cover"
                     />
@@ -124,16 +127,19 @@
                 <td class="p-4 font-semibold text-gray-500">Phones</td>
                 <td class="p-4 font-bold mono">$380.00</td>
                 <td class="p-4 text-right">
-                  <a
-                    href="admin-product-form.html"
-                    class="text-sm font-bold text-gray-400 hover:text-black transition-colors mr-3"
-                    >Edit</a
-                  >
-                  <button
-                    class="text-sm font-bold text-red-400 hover:text-red-600 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  <div class="flex items-center justify-end gap-4">
+                    <a
+                      href="admin-product-form.html"
+                      class="text-sm font-bold text-gray-400 hover:text-black transition-colors"
+                      >Edit</a
+                    >
+                    <button
+                      class="text-red-400 hover:text-red-600 transition-colors"
+                      title="Delete"
+                    >
+                      <img src="../resources/trash.svg" class="w-5 h-5" alt="Delete" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
