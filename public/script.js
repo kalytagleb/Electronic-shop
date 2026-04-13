@@ -25,13 +25,75 @@ function toggleMobileCat() {
   if (arrow) arrow.classList.toggle('rotate-180');
 }
 
-function changeQuantity(btn, delta) {
+async function changeQuantity(btn, delta) {
   const container = btn.parentElement;
-  const qtyEl = container.querySelector('[data-qty]');
-  let qty = parseInt(qtyEl.textContent);
+  const qtyEl = container.querySelector('[data-qty]') || container.querySelector('input[name="quantity"]');
+  
+  let qty = parseInt(qtyEl.textContent || qtyEl.value);
   qty += delta;
-  if (qty < 1) qty = 1;
-  qtyEl.textContent = qty;
+  
+  if (qty < 1) return; 
+  
+  if (qtyEl.tagName === 'INPUT') {
+      qtyEl.value = qty;
+  } else {
+      qtyEl.textContent = qty;
+  }
+
+  if (typeof updateCartTotals === 'function') {
+      updateCartTotals();
+  }
+
+  const itemElement = btn.closest('.cart-item');
+  if (itemElement) {
+      const productId = itemElement.getAttribute('data-id');
+      const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+      
+      if (productId && csrfTokenMeta) {
+          try {
+              await fetch('/cart/update', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRF-TOKEN': csrfTokenMeta.getAttribute('content'),
+                      'Accept': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      id: productId,
+                      quantity: qty
+                  })
+              });
+          } catch (error) {
+              console.error('Error cart:', error);
+          }
+      }
+  }
+}
+
+function updateCartTotals() {
+  let subtotal = 0;
+  const deliveryFee = 9.99;
+
+  const items = document.querySelectorAll('.cart-item');
+
+  items.forEach(item => {
+    const price = parseFloat(item.getAttribute('data-price'));
+    const qty = parseInt(item.querySelector('[data-qty]').textContent);
+    
+    subtotal += price * qty;
+  });
+
+  const subtotalEl = document.getElementById('subtotal');
+  const totalEl = document.getElementById('total');
+
+  if (subtotalEl) {
+    subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+  }
+
+  if (totalEl) {
+    const finalTotal = subtotal > 0 ? subtotal + deliveryFee : 0;
+    totalEl.textContent = `$${finalTotal.toFixed(2)}`;
+  }
 }
 
 function removeItem(btn) {
@@ -42,14 +104,53 @@ function removeItem(btn) {
   setTimeout(() => row.remove(), 300);
 }
 
-function addToCart(btn) {
-  btn.textContent = 'Added!';
-  btn.style.background = '#16a34a';
-  setTimeout(() => {
-    btn.innerHTML =
-      '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/> </svg> Add to cart';
-    btn.style.background = '';
-  }, 2000);
+async function addToCart(btn, productId) {
+  const qtyEl = document.getElementById('productQuantity');
+  const quantity = qtyEl ? parseInt(qtyEl.textContent) : 1;
+
+  const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+  
+  if (!csrfTokenMeta) {
+      console.error('CSRF token not found');
+      return;
+  }
+
+  try {
+      const response = await fetch('/cart/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfTokenMeta.getAttribute('content'),
+              'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+              id: productId,
+              quantity: quantity
+          })
+      });
+
+      if (response.ok) {
+          const result = await response.json();
+          
+          const originalText = btn.innerHTML;
+          btn.textContent = `Added ${quantity} item(s)!`;
+          btn.style.background = '#16a34a';
+          
+          const cartNavStr = document.querySelector('a[href*="cart"]');
+          if (cartNavStr && result.cart_count !== undefined) {
+             cartNavStr.innerHTML = `<img src="/static/cart.svg" class="w-4 h-4" alt=""> Cart ${result.cart_count}`;
+          }
+
+          setTimeout(() => {
+              btn.innerHTML = originalText;
+              btn.style.background = '';
+          }, 2000);
+      } else {
+          alert('Error adding to cart');
+      }
+  } catch (error) {
+      console.error('Add to cart error:', error);
+  }
 }
 
 function setImg(thumb, src) {
@@ -178,13 +279,59 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('search')) {
+        searchInput.value = urlParams.get('search');
+    }
+
+    let searchTimeout = null;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(searchTimeout); 
+
+        searchTimeout = setTimeout(() => {
+            const query = this.value;
+
+            if (!window.location.pathname.includes('/catalog')) {
+                if (query.trim() !== '') {
+                    window.location.href = `/catalog?search=${encodeURIComponent(query)}`;
+                }
+                return;
+            }
+
+            const url = new URL(window.location.href);
+            if (query.trim() !== '') {
+                url.searchParams.set('search', query);
+            } else {
+                url.searchParams.delete('search');
+            }
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const newResults = doc.getElementById('catalogResults');
+                if (newResults) {
+                    document.getElementById('catalogResults').innerHTML = newResults.innerHTML;
+                }
+
+                window.history.pushState({}, '', url);
+            })
+            .catch(error => console.error('Search error:', error));
+            
+        }, 400);
+    });
+
     searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        const query = searchInput.value.trim();
-        if (query) {
-          window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
+        if (e.key === 'Enter') {
+            e.preventDefault();
         }
-      }
     });
   }
 });

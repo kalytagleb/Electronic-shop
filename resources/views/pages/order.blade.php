@@ -79,7 +79,7 @@
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
         >
           <img src="{{ asset('static/cart.svg') }}" class="w-4 h-4" alt="" />
-          Cart 0
+          Cart {{ session('cart') ? count(session('cart')) : 0 }}        
         </a>
         <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60 transition-opacity"
           >Log In</a

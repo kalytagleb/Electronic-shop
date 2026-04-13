@@ -12,6 +12,25 @@
     />
   </head>
   <body class="bg-gray-100 text-gray-900">
+    @if(session('success') || session('error'))
+        <div id="flash-message" class="fixed top-20 right-8 z-50 animate-bounce">
+            <div class="{{ session('success') ? 'bg-black' : 'bg-red-600' }} text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+                <span class="text-sm font-bold uppercase tracking-wider">
+                    {{ session('success') ?? session('error') }}
+                </span>
+                <button onclick="document.getElementById('flash-message').remove()" class="hover:opacity-50">
+                    ✕
+                </button>
+            </div>
+        </div>
+
+        <script>
+            setTimeout(() => {
+                const msg = document.getElementById('flash-message');
+                if(msg) msg.style.display = 'none';
+            }, 4000);
+        </script>
+    @endif
     <nav
       class="bg-white border-b border-gray-200 px-8 flex items-center justify-between h-16 sticky top-0 z-20"
     >
@@ -82,7 +101,7 @@
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
         >
           <img src="static/cart.svg" class="w-4 h-4" alt="" />
-          Cart 0
+          Cart {{ session('cart') ? count(session('cart')) : 0 }}        
         </a>
         <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60 transition-opacity"
           >Log In</a
@@ -224,135 +243,34 @@
       </section>
 
       <section id="deals">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-extrabold tracking-tight">Featured Products</h2>
-          <a
-            href="{{ route('catalog') }}"
-            class="text-sm font-semibold text-gray-400 hover:text-gray-900 transition-colors"
-            >View all-></a
-          >
-        </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          @foreach($featuredProducts as $product)
           <a
-            href="{{ route('product', 1) }}"
+            href="{{ route('product', $product->id) }}"
             class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="relative">
               <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img src="images/iPhone14_pro.jpg" alt="" class="w-full h-full object-cover" />
-              </div>
-              <span
-                class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                >PHONE</span
-              >
-              <button
-                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-              >
-                <img src="static/cart_catalog.svg" class="w-4 h-4" alt="" />
-              </button>
+                <img src="{{ asset($product->primary_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover" />              </div>
+              <span class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full">
+                  {{ $product->category->name ?? 'NEW' }}
+              </span>
+              <form action="{{ route('cart.add') }}" method="POST" class="absolute top-2 right-2">
+                  @csrf
+                  <input type="hidden" name="product_id" value="{{ $product->id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" onclick="event.stopPropagation();" class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700">
+                    <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Add to cart" />
+                  </button>
+              </form>
             </div>
             <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">iPhone 14 Pro 256 GB</p>
-              <p class="text-sm text-gray-500 mt-1 mono">$995.00</p>
+              <p class="text-sm font-semibold text-gray-900">{{ $product->name }}</p>
+              <p class="text-sm text-gray-500 mt-1 mono">${{ number_format($product->price, 2) }}</p>
             </div>
           </a>
-
-          <a
-            href="{{ route('product', 2) }}"
-            class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            <div class="relative">
-              <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img src="images/iPhone13.jpg" alt="" class="w-full h-full object-cover" />
-              </div>
-              <span
-                class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                >PHONE</span
-              >
-              <button
-                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-              >
-                <img src="static/cart_catalog.svg" class="w-4 h-4" alt="" />
-              </button>
-            </div>
-            <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">iPhone 13 128GB Gold</p>
-              <p class="text-sm text-gray-500 mt-1 mono">$380.00</p>
-            </div>
-          </a>
-
-          <a
-            href="{{ route('product', 3) }}"
-            class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            <div class="relative">
-              <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img src="images/iPhone12_pro.jpg" alt="" class="w-full h-full object-cover" />
-              </div>
-              <span
-                class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                >PHONE</span
-              >
-              <button
-                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-              >
-                <img src="static/cart_catalog.svg" class="w-4 h-4" alt="" />
-              </button>
-            </div>
-            <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">iPhone 12 Pro 128GB Blue</p>
-              <p class="text-sm text-gray-500 mt-1 mono">$348.00</p>
-            </div>
-          </a>
-
-          <a
-            href="{{ route('product', 4) }}"
-            class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            <div class="relative">
-              <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img src="images/iPhone11_pro.jpg" alt="" class="w-full h-full object-cover" />
-              </div>
-              <span
-                class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                >PHONE</span
-              >
-              <button
-                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-              >
-                <img src="static/cart_catalog.svg" class="w-4 h-4" alt="" />
-              </button>
-            </div>
-            <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">iPhone 11 Pro 64GB Black</p>
-              <p class="text-sm text-gray-500 mt-1 mono">$152.50</p>
-            </div>
-          </a>
-
-          <a
-            href="{{ route('product', 5) }}"
-            class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            <div class="relative">
-              <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                <img src="images/iPhone11.jpg" alt="" class="w-full h-full object-cover" />
-              </div>
-              <span
-                class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                >PHONE</span
-              >
-              <button
-                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-              >
-                <img src="static/cart_catalog.svg" class="w-4 h-4" alt="" />
-              </button>
-            </div>
-            <div class="p-3 text-center">
-              <p class="text-sm font-semibold text-gray-900">iPhone 11 64GB White</p>
-              <p class="text-sm text-gray-500 mt-1 mono">$128.00</p>
-            </div>
-          </a>
-        </div>
+          @endforeach
+      </div>
 
         <div class="flex justify-center mt-6">
           <a

@@ -2,24 +2,49 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $phonesCategory = Category::create(['name' => 'Phones']);
+        Category::create(['name' => 'Laptops']);
+        Category::create(['name' => 'Monitors']);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $product1 = Product::create([
+            'category_id' => $phonesCategory->id,
+            'name' => 'iPhone 14 Pro 256 GB',
+            'description' => 'Отличный смартфон от Apple.',
+            'price' => 995.00,
+            'stock_quantity' => 15,
+            'brand' => 'Apple',
+            'color' => 'Space Black'
+        ]);
+
+        ProductImage::create([
+            'product_id' => $product1->id,
+            'image_url' => 'images/iPhone14_pro.jpg',
+            'is_primary' => true
+        ]);
+
+        $product2 = Product::create([
+            'category_id' => $phonesCategory->id,
+            'name' => 'iPhone 13 128GB Gold',
+            'description' => 'Надежный и красивый смартфон.',
+            'price' => 380.00,
+            'stock_quantity' => 5,
+            'brand' => 'Apple',
+            'color' => 'Gold'
+        ]);
+
+        ProductImage::create([
+            'product_id' => $product2->id,
+            'image_url' => 'images/iPhone13.jpg',
+            'is_primary' => true
         ]);
     }
 }

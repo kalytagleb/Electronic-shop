@@ -77,7 +77,7 @@
           class="flex items-center gap-1 text-sm hover:opacity-60 transition-opacity"
         >
           <img src="{{ asset('static/cart.svg') }}" class="w-4 h-4" alt="" />
-          Cart 0
+          Cart {{ session('cart') ? count(session('cart')) : 0 }}        
         </a>
         <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60 transition-opacity"
           >Log In</a
@@ -127,415 +127,164 @@
 
     <main class="w-full 2xl:px-16 px-8 py-8">
       <h1 class="text-3xl font-extrabold mb-6">Electronic shop</h1>
-      <div class="flex items-center justify-end mb-6 gap-4">
-        <div class="relative">
-          <button
-            onclick="toggleSort('sortMenu')"
-            class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
-          >
-            Sort by relevance
-            <img src="{{ asset('static/chevron-down.svg') }}" class="w-4 h-4" alt="" />
-          </button>
-          <div
-            id="sortMenu"
-            class="sort-dropdown bg-white border border-gray-200 rounded-xl shadow-lg min-w-48 py-1 z-10"
-          >
-            <button
-              class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50 bg-gray-50"
-            >
-              By relevance
-            </button>
-            <button class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50">
-              Price: low to high
-            </button>
-            <button class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50">
-              Price: high to low
-            </button>
-            <button class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50">
-              Newest first
-            </button>
+      
+      <form method="GET" action="{{ route('catalog') }}" id="filterForm">
+          
+          @php
+              $sortLabels = [
+                  '' => 'By relevance',
+                  'price_asc' => 'Price: low to high',
+                  'price_desc' => 'Price: high to low',
+              ];
+              $currentSort = request('sort', '');
+          @endphp
+          
+          <input type="hidden" name="sort" id="sortInput" value="{{ $currentSort }}">
+          
+          <div class="flex items-center justify-end mb-6 gap-4">
+            <div class="relative">
+              <button
+                type="button"
+                onclick="toggleSort('sortMenu')"
+                class="flex items-center gap-1 text-sm font-semibold hover:opacity-60 transition-opacity"
+              >
+                {{ $sortLabels[$currentSort] ?? 'Sort by relevance' }}
+                <img src="{{ asset('static/chevron-down.svg') }}" class="w-4 h-4" alt="" />
+              </button>
+              
+              <div
+                id="sortMenu"
+                class="sort-dropdown bg-white border border-gray-200 rounded-xl shadow-lg min-w-48 py-1 z-10"
+              >
+                <button type="button" onclick="document.getElementById('sortInput').value=''; this.form.submit();" class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50 {{ $currentSort == '' ? 'bg-gray-50' : '' }}">
+                  By relevance
+                </button>
+                <button type="button" onclick="document.getElementById('sortInput').value='price_asc'; this.form.submit();" class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50 {{ $currentSort == 'price_asc' ? 'bg-gray-50' : '' }}">
+                  Price: low to high
+                </button>
+                <button type="button" onclick="document.getElementById('sortInput').value='price_desc'; this.form.submit();" class="block w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-50 {{ $currentSort == 'price_desc' ? 'bg-gray-50' : '' }}">
+                  Price: high to low
+                </button>
+              </div>
+            </div>
+            <span class="text-sm text-gray-400 mono">{{ $products->total() }} goods</span>
           </div>
-        </div>
-        <span class="text-sm text-gray-400 mono">15 goods</span>
-      </div>
 
-      <div class="flex flex-col md:flex-row gap-8">
-        <aside class="w-full md:w-52 shrink-0">
-          <h2 class="font-bold text-base mb-4">Filters</h2>
+          <div class="flex flex-col md:flex-row gap-8">
+            
+            <aside class="w-full md:w-52 shrink-0">
+              <h2 class="font-bold text-base mb-4">Filters</h2>
 
-          <div class="border-b border-gray-200 py-3">
-            <button
-              onclick="toggleFilter('brand')"
-              class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity"
-            >
-              Brand
-              <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
-              <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
-            </button>
+              @php
+                  $activeBrands = request('brand', []);
+                  $activeColors = request('color', []);
+                  
+                  $isBrandOpen = count($activeBrands) > 0;
+                  $isColorOpen = count($activeColors) > 0;
+              @endphp
 
-            <div id="brand" class="filter-body mt-3 space-y-2">
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Apple
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Samsung
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Huawei
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Sony
-              </label>
+              <div class="border-b border-gray-200 py-3">
+                <button type="button" onclick="toggleFilter('brand')" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity {{ $isBrandOpen ? 'filter-open' : '' }}">
+                  Brand
+                  <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
+                  <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
+                </button>
+
+                <div id="brand" class="filter-body mt-3 space-y-2 {{ $isBrandOpen ? 'open' : '' }}">
+                  @foreach($brands as $b)
+                  <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
+                    <input type="checkbox" name="brand[]" value="{{ $b }}" class="w-4 h-4 accent-black rounded" 
+                          @if(in_array($b, $activeBrands)) checked @endif 
+                          onchange="this.form.submit()" />
+                    {{ $b }}
+                  </label>
+                  @endforeach
+                </div>
+              </div>
+
+              <div class="border-b border-gray-200 py-3">
+                <button type="button" onclick="toggleFilter('color')" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity {{ $isColorOpen ? 'filter-open' : '' }}">
+                  Color
+                  <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
+                  <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
+                </button>
+                <div id="color" class="filter-body mt-3 space-y-2 {{ $isColorOpen ? 'open' : '' }}">
+                  @foreach($colors as $c)
+                  <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
+                    <input type="checkbox" name="color[]" value="{{ $c }}" class="w-4 h-4 accent-black rounded" 
+                          @if(in_array($c, $activeColors)) checked @endif 
+                          onchange="this.form.submit()" />
+                    {{ $c }}
+                  </label>
+                  @endforeach
+                </div>
+              </div>
+
+              <div class="border-b border-gray-200 py-3">
+                <button type="button" onclick="toggleFilter('price')" class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity filter-open" id="priceBtn">
+                  Price
+                  <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
+                  <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
+                </button>
+
+                <div id="price" class="filter-body open mt-3">
+                  <div class="flex justify-between text-xs text-gray-500 mono mb-2">
+                    <span id="priceMin">$0</span>
+                    <span id="priceMax">${{ request('max_price', 1500) }}</span>
+                  </div>
+                  <input type="hidden" name="min_price" value="0">
+                  <input
+                    type="range"
+                    name="max_price"
+                    min="0"
+                    max="1500"
+                    value="{{ request('max_price', 1500) }}"
+                    step="10"
+                    class="w-full accent-black cursor-pointer"
+                    oninput="document.getElementById('priceMax').textContent = '$' + this.value"
+                    onchange="this.form.submit()"
+                  />
+                </div>
+              </div>
+              
+              @if(request()->anyFilled(['brand', 'color', 'max_price', 'sort']))
+                  <a href="{{ route('catalog') }}" class="block w-full text-center mt-6 text-sm font-semibold text-gray-500 hover:text-black transition-colors">
+                    Clear Filters
+                  </a>
+              @endif
+            </aside>
+
+            <div class="flex-1 flex flex-col gap-8" id="catalogResults">
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  @forelse($products as $product)
+                      <a href="{{ route('product', $product->id) }}" class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200">
+                          <div class="relative">
+                              <div class="w-full h-52 bg-gray-100 overflow-hidden">
+                                  <img src="{{ asset($product->primary_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover" />
+                              </div>
+                              <span class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full">
+                                  {{ $product->category->name }}
+                              </span>
+                          </div>
+                          <div class="p-3 text-center">
+                              <p class="text-sm font-semibold text-gray-900">{{ $product->name }}</p>
+                              <p class="text-sm text-gray-500 mt-1 mono">${{ number_format($product->price, 2) }}</p>
+                          </div>
+                      </a>
+                  @empty
+                      <div class="col-span-full text-center py-12 bg-white rounded-xl border border-gray-200">
+                          <p class="text-gray-500 text-lg">No products found matching your filters.</p>
+                      </div>
+                  @endforelse
+              </div>
+
+              <div class="mt-4">
+                  {{ $products->links() }}
+              </div>
+              
             </div>
           </div>
-
-          <div class="border-b border-gray-200 py-3">
-            <button
-              onclick="toggleFilter('color')"
-              class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity"
-            >
-              Color
-              <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
-              <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
-            </button>
-            <div id="color" class="filter-body mt-3 space-y-2">
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Black
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                White
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Blue
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Green
-              </label>
-
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                Gold
-              </label>
-            </div>
-          </div>
-
-          <div class="border-b border-gray-200 py-3">
-            <button
-              onclick="toggleFilter('price')"
-              class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity filter-open"
-              id="priceBtn"
-            >
-              Price
-              <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
-              <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
-            </button>
-
-            <div id="price" class="filter-body open mt-3">
-              <div class="flex justify-between text-xs text-gray-500 mono mb-2">
-                <span id="priceMin">$0</span>
-                <span id="priceMax">$1000</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="1000"
-                value="1000"
-                step="10"
-                class="w-full accent-black cursor-pointer"
-                oninput="document.getElementById('priceMax').textContent = '$' + this.value"
-              />
-            </div>
-          </div>
-
-          <div class="py-3">
-            <button
-              onclick="toggleFilter('storage')"
-              class="flex items-center justify-between w-full text-sm font-semibold hover:opacity-60 transition-opacity"
-            >
-              Storage
-              <img src="{{ asset('static/plus.svg') }}" class="filter-icon-plus w-4 h-4" alt="" />
-              <img src="{{ asset('static/minus.svg') }}" class="filter-icon-minus w-4 h-4" alt="" />
-            </button>
-            <div id="storage" class="filter-body mt-3 space-y-2">
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                64 GB
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                128 GB
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                256 GB
-              </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer hover:text-gray-600">
-                <input type="checkbox" class="w-4 h-4 accent-black rounded" />
-                512 GB
-              </label>
-            </div>
-          </div>
-        </aside>
-
-        <div class="flex-1 flex flex-col gap-8">
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-36 sm:h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone11.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 11 64GB White</p>
-                <p class="text-sm text-gray-500 mono">$128.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone11_pro.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 11 Pro 64GB Black</p>
-                <p class="text-sm text-gray-500 mono">$152.50</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone13.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 13 128GB Gold</p>
-                <p class="text-sm text-gray-500 mono">$380.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone11_pro_max.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 11 Pro Max 128GB</p>
-                <p class="text-sm text-gray-500 mono">$212.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone14_pro.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 14 Pro 256GB White</p>
-                <p class="text-sm text-gray-500 mono">$995.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone111.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 11 64GB Green</p>
-                <p class="text-sm text-gray-500 mono">$138.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone12_pro.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 12 Pro 128GB Blue</p>
-                <p class="text-sm text-gray-500 mono">$348.00</p>
-              </div>
-            </a>
-
-            <a
-              href="{{ route('product', 1) }}"
-              class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div class="relative">
-                <div class="w-full h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src="{{ asset('images/iPhone12_pro_max.jpg') }}"
-                    alt="iPhone 11"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full"
-                  >PHONE</span
-                >
-                <button
-                  class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800"
-                >
-                  <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="" />
-                </button>
-              </div>
-              <div class="p-3 text-center">
-                <p class="text-sm font-semibold text-gray-900">iPhone 12 Pro Max 128GB</p>
-                <p class="text-sm text-gray-500 mono">$364.00</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="flex items-center justify-center gap-1">
-            <span
-              class="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-100 text-gray-300 cursor-not-allowed select-none"
-            >
-              <img src="{{ asset('static/chevron-left.svg') }}" class="w-4 h-4 opacity-30" alt="" />
-            </span>
-            <span
-              class="w-9 h-9 rounded-lg flex items-center justify-center bg-black text-white text-sm font-bold mono select-none"
-              >1</span
-            >
-            <a
-              href="#"
-              class="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-gray-200 hover:border-gray-900 text-sm font-semibold mono transition-colors"
-              >2</a
-            >
-            <a
-              href="#"
-              class="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-gray-200 hover:border-gray-900 transition-colors"
-            >
-              <img src="{{ asset('static/chevron-right.svg') }}" class="w-4 h-4 opacity-30" alt="" />
-            </a>
-          </div>
-        </div>
-      </div>
+      </form>
     </main>
 
     <script src="{{ asset('script.js') }}"></script>

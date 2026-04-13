@@ -1,18 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CatalogController;
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/catalog', function () {
-    return view('pages.catalog');
-})->name('catalog');
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 
-Route::get('/product/{id}', function () {
-    return view('pages.product');
-})->name('product');
+Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product');
 
 Route::get('/best-deals', function () {
     return view('pages.best-deals');
@@ -26,13 +25,13 @@ Route::get('/register', function () {
     return view('pages.register');
 })->name('register');
 
-Route::get('/cart', function () {
-    return view('pages.cart');
-})->name('cart');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-Route::get('/checkout', function () {
-    return view('pages.checkout');
-})->name('checkout');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 
 Route::get('/order', function () {
     return view('pages.order');
