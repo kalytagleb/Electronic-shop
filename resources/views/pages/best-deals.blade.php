@@ -36,15 +36,11 @@
             id="catMenu"
             class="sort-dropdown bg-white border border-gray-200 rounded-xl shadow-lg min-w-40 py-1 z-30"
           >
-            <a href="{{ route('catalog') }}" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Phones</a
-            >
-            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Laptops</a>
-            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Monitors</a>
-            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">Audio</a>
-            <a href="#" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-              >Accessories</a
-            >
+            @foreach($globalCategories as $cat)
+                <a href="{{ route('catalog', ['category_id' => [$cat->id]]) }}" class="block px-4 py-2 text-sm font-semibold hover:bg-gray-50">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
           </div>
         </div>
       </div>
@@ -109,7 +105,11 @@
           <img src="{{ asset('static/chevron-down.svg') }}" class="w-4 h-4" alt="" />
         </button>
         <div id="mobileCatMenu" class="hidden mt-2 ml-3 flex flex-col gap-2">
-          <a href="{{ route('catalog') }}" class="text-sm text-gray-600 hover:text-black">Phones</a>
+            @foreach($globalCategories as $cat)
+                <a href="{{ route('catalog', ['category_id' => [$cat->id]]) }}" class="text-sm text-gray-600 hover:text-black">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
         </div>
       </div>
     </div>

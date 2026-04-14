@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $product1 = Product::create([
             'category_id' => $phonesCategory->id,
             'name' => 'iPhone 14 Pro 256 GB',
-            'description' => 'Отличный смартфон от Apple.',
+            'description' => '',
             'price' => 995.00,
             'stock_quantity' => 15,
             'brand' => 'Apple',
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $product2 = Product::create([
             'category_id' => $phonesCategory->id,
             'name' => 'iPhone 13 128GB Gold',
-            'description' => 'Надежный и красивый смартфон.',
+            'description' => '',
             'price' => 380.00,
             'stock_quantity' => 5,
             'brand' => 'Apple',
@@ -46,5 +46,6 @@ class DatabaseSeeder extends Seeder
             'image_url' => 'images/iPhone13.jpg',
             'is_primary' => true
         ]);
+        Product::factory(23)->create();
     }
 }

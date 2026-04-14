@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category; 
 use Illuminate\Http\Request;
 
 class CatalogController extends Controller
@@ -12,7 +13,7 @@ class CatalogController extends Controller
         $query = Product::with(['category', 'images']);
 
         if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+            $query->whereIn('category_id', $request->category_id);
         }
 
         if ($request->filled('brand')) {
@@ -46,11 +47,12 @@ class CatalogController extends Controller
             $query->latest(); 
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(9)->withQueryString();
 
         $brands = Product::whereNotNull('brand')->distinct()->pluck('brand');
         $colors = Product::whereNotNull('color')->distinct()->pluck('color');
+        $categories = Category::all();
 
-        return view('pages.catalog', compact('products', 'brands', 'colors'));
+        return view('pages.catalog', compact('products', 'brands', 'colors', 'categories'));
     }
 }
