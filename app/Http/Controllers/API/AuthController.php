@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use PSpell\Config;
 
 class AuthController extends Controller
 {
     public function login(Request $request) {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
         $credentials = $request->only(['email', 'password']);
         if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -21,24 +24,25 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'first_name'            => 'required|string|max:255',
+            'last_name'             => 'required|string|max:255',
+            'email'                 => 'required|string|email|max:255|unique:users',
+            'password'              => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string',
+            'phone'                 => 'nullable|string|max:20',
         ]);
 
         $user = User::create([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'password'   => $request->password,
+            'phone'      => $request->phone,
         ]);
 
-        return response()->json([
-            'message' => 'User registered',
-            'user' => $user
-        ], 201);
+        $token = auth('api')->login($user);
+
+        return $this->responseWithToken($token, $user, 201);
     }
 
     public function user() {
@@ -57,11 +61,12 @@ class AuthController extends Controller
         return $this->responseWithToken($newToken);
     }
 
-    protected function responseWithToken($token) {
+    protected function responseWithToken($token, $user = null, int $status = 200) {
         return response()->json([
             'access_token' => $token,
-            'type' => 'Bearer',
-            'expires_in' => config('jwt.ttl') * 60
-        ]);
+            'token_type'   => 'Bearer',
+            'expires_in'   => config('jwt.ttl') * 60,
+            'user'         => $user ?? auth('api')->user(),
+        ], $status);
     }
 }
