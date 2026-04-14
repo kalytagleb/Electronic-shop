@@ -184,10 +184,11 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       const data = {
-        first_name: document.getElementById('regFirstName').value,
-        last_name: document.getElementById('regLastName').value,
-        email: document.getElementById('regEmail').value,
-        password: document.getElementById('regPassword').value,
+        first_name:            document.getElementById('regFirstName').value,
+        last_name:             document.getElementById('regLastName').value,
+        email:                 document.getElementById('regEmail').value,
+        password:              document.getElementById('regPassword').value,
+        password_confirmation: document.getElementById('regPasswordConfirmation').value,
       };
 
       try {
@@ -200,10 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
 
         if (response.status === 201) {
-          alert('Registration successfull');
-          window.location.href = '/login';
+          localStorage.setItem('jwt_token', result.access_token);
+          window.location.href = '/';
         } else {
-          alert('Error.')
+          alert('Error: ' + (result.message ?? JSON.stringify(result.errors)));
         }
       } catch (error) {
         console.error('Fetch error:', error);
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
           body: JSON.stringify(data)

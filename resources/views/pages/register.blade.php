@@ -183,6 +183,7 @@
           >
           <input
             type="password"
+            id="regPasswordConfirmation"
             placeholder="Repeat password"
             class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors"
           />
