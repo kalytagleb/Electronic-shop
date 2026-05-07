@@ -42,32 +42,39 @@
         <h1 class="text-xl font-bold">Products</h1>
         <div class="flex items-center gap-4">
           <span class="text-sm font-semibold text-gray-500">Admin User</span>
-          <a
-            href="{{ route('login') }}"
-            class="text-sm font-bold underline hover:opacity-60 transition-opacity"
-            >Log out</a
-          >
+         <form action="{{ route('logout') }}" method="POST" class="inline">
+              @csrf
+              <button type="submit" class="text-sm font-bold underline hover:opacity-60 transition-opacity">Log out</button>
+          </form>
         </div>
       </header>
 
       <div class="p-8 flex-1 overflow-auto">
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg text-sm font-bold">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="flex justify-between items-center mb-6">
-          <div class="relative">
+          <div class="relative" id="searchWrapper">
             <input
               type="text"
+              id="searchInput"
+              value="{{ request('search') }}"
               placeholder="Search products..."
               class="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm font-mono outline-none focus:border-black w-64 shadow-sm"
             />
           </div>
           <a
-            href="{{ route('admin.product.form') }}"
+            href="{{ route('admin.product.create') }}"
             class="bg-black text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
           >
             + Add New Product
           </a>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div id="adminProductsTable" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr
@@ -80,72 +87,49 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 text-sm">
+              @forelse($products as $product)
               <tr class="hover:bg-gray-50 transition-colors">
                 <td class="p-4 flex items-center gap-3">
-                  <div
-                    class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shrink-0 flex items-center justify-center"
-                  >
-                    <img
-                      src="{{ asset('images/iPhone14_pro.jpg') }}"
-                      alt="iPhone 14 Pro"
-                      class="w-full h-full object-cover"
-                    />
+                  <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shrink-0 flex items-center justify-center">
+                    <img src="{{ asset($product->primary_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover" />
                   </div>
-                  <span class="font-semibold text-gray-900">iPhone 14 Pro 256GB</span>
+                  <span class="font-semibold text-gray-900">{{ $product->name }}</span>
                 </td>
-                <td class="p-4 font-semibold text-gray-500">Phones</td>
-                <td class="p-4 font-bold mono">$995.00</td>
+                <td class="p-4 font-semibold text-gray-500">{{ $product->category->name ?? 'N/A' }}</td>
+                <td class="p-4 font-bold mono">${{ number_format($product->price, 2) }}</td>
                 <td class="p-4 text-right">
                   <div class="flex items-center justify-end gap-4">
-                    <a
-                      href="{{ route('admin.product.form') }}"
-                      class="text-sm font-bold text-gray-400 hover:text-black transition-colors"
-                      >Edit</a
-                    >
-                    <button
-                      class="text-red-400 hover:text-red-600 transition-colors"
-                      title="Delete"
-                    >
-                      <img src="{{ asset('static/trash.svg') }}" class="w-5 h-5" alt="Delete" />
-                    </button>
+                    <a href="{{ route('admin.product.edit', $product->id) }}" class="text-sm font-bold text-gray-400 hover:text-black transition-colors">Edit</a>
+                    
+                    <form action="{{ route('admin.product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Delete this product?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-400 hover:text-red-600 transition-colors" title="Delete">
+                          <img src="{{ asset('static/trash.svg') }}" class="w-5 h-5" alt="Delete" />
+                        </button>
+                    </form>
                   </div>
                 </td>
               </tr>
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="p-4 flex items-center gap-3">
-                  <div
-                    class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shrink-0 flex items-center justify-center"
-                  >
-                    <img
-                      src="{{ asset('images/iPhone13.jpg') }}"
-                      alt="iPhone 13"
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span class="font-semibold text-gray-900">iPhone 13 128GB Gold</span>
-                </td>
-                <td class="p-4 font-semibold text-gray-500">Phones</td>
-                <td class="p-4 font-bold mono">$380.00</td>
-                <td class="p-4 text-right">
-                  <div class="flex items-center justify-end gap-4">
-                    <a
-                      href="{{ route('admin.product.form') }}"
-                      class="text-sm font-bold text-gray-400 hover:text-black transition-colors"
-                      >Edit</a
-                    >
-                    <button
-                      class="text-red-400 hover:text-red-600 transition-colors"
-                      title="Delete"
-                    >
-                      <img src="{{ asset('static/trash.svg') }}" class="w-5 h-5" alt="Delete" />
-                    </button>
-                  </div>
-                </td>
+              @empty
+              <tr>
+                  <td colspan="4" class="p-8 text-center text-gray-500 font-semibold">
+                      No products found.
+                  </td>
               </tr>
+              @endforelse
             </tbody>
           </table>
+          
+          @if(method_exists($products, 'links'))
+            <div class="p-4 border-t border-gray-200">
+                {{ $products->links() }}
+            </div>
+          @endif
         </div>
       </div>
     </main>
+
+    <script src="{{ asset('script.js') }}"></script>
   </body>
 </html>

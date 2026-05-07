@@ -11,6 +11,17 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    </style>
   </head>
   <body class="bg-gray-100 text-gray-900">
     @if(session('success') || session('error'))
@@ -162,8 +173,7 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <button type="button" onclick="changeQuantity(this, -1)" class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-black transition-colors text-lg font-bold">-</button>
-                        <span data-qty class="text-sm font-bold mono w-4 text-center">{{ $details['quantity'] }}</span>
-                        <button type="button" onclick="changeQuantity(this, 1)" class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-black transition-colors text-lg font-bold">+</button>
+                        <input type="number" name="quantity" data-qty value="{{ $details['quantity'] }}" min="1" class="w-16 text-center font-mono text-sm border border-gray-200 rounded outline-none" onchange="changeQuantity(this, 0)">                        <button type="button" onclick="changeQuantity(this, 1)" class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-black transition-colors text-lg font-bold">+</button>
                     </div>
                     <form action="{{ route('cart.remove', $id) }}" method="POST" class="ml-2">
                       @csrf

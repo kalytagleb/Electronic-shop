@@ -55,9 +55,9 @@ class CheckoutController extends Controller
                 'price' => $item['price']
             ]);
         }
-
+        
         session()->forget('cart');
 
-        return redirect()->route('home')->with('success', 'Thank you for your order!');
+        return redirect()->route('order')->with('success', 'Your order has been placed successfully!');
     }
 }
