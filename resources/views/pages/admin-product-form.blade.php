@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Edit Product | Electronic shop</title>
+    <title>Admin - {{ isset($product) ? 'Edit Product' : 'Add Product' }} | Electronic shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
@@ -45,13 +45,32 @@
             class="text-sm font-bold text-gray-400 hover:text-black transition-colors"
             >Back</a
           >
-          <h1 class="text-xl font-bold">Add / Edit Product</h1>
+          <h1 class="text-xl font-bold">
+              {{ isset($product) ? 'Edit Product' : 'Add New Product' }}
+          </h1>
         </div>
       </header>
 
       <div class="p-8 flex-1 overflow-auto">
         <div class="max-w-3xl bg-white border border-gray-200 rounded-xl shadow-sm p-6 md:p-8">
-          <form action="{{ route('admin.products') }}" class="flex flex-col gap-6">
+          
+          @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+          @endif
+
+          <form action="{{ isset($product) ? route('admin.product.update', $product->id) : route('admin.product.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
+            @csrf
+            
+            @if(isset($product))
+                @method('PUT')
+            @endif
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-xs font-bold uppercase tracking-widest mb-2"
@@ -59,9 +78,11 @@
                 >
                 <input
                   type="text"
-                  value="iPhone 14 Pro 256GB"
+                  name="name"
+                  value="{{ old('name', $product->name ?? '') }}"
                   placeholder="e.g., iPhone 13"
                   class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-mono outline-none focus:border-black transition-colors"
+                  required
                 />
               </div>
 
@@ -70,27 +91,47 @@
                   >Category</label
                 >
                 <select
+                  name="category_id"
                   class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-semibold outline-none focus:border-black transition-colors appearance-none cursor-pointer"
+                  required
                 >
-                  <option>Phones</option>
-                  <option>Laptops</option>
-                  <option>Monitors</option>
-                  <option>Audio</option>
-                  <option>Accessories</option>
+                  @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ (old('category_id', $product->category_id ?? '') == $category->id) ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                  @endforeach
                 </select>
               </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2"
-                >Price ($)</label
-              >
-              <input
-                type="number"
-                value="995.00"
-                step="0.01"
-                class="w-1/2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-mono outline-none focus:border-black transition-colors"
-              />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-2"
+                  >Price ($)</label
+                >
+                <input
+                  type="number"
+                  name="price"
+                  value="{{ old('price', $product->price ?? '') }}"
+                  step="0.01"
+                  placeholder="995.00"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-mono outline-none focus:border-black transition-colors"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-2"
+                  >Brand</label
+                >
+                <input
+                  type="text"
+                  name="brand"
+                  value="{{ old('brand', $product->brand ?? '') }}"
+                  placeholder="e.g., Apple"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-mono outline-none focus:border-black transition-colors"
+                />
+              </div>
             </div>
 
             <div>
@@ -98,50 +139,35 @@
                 >Description</label
               >
               <textarea
+                name="description"
                 rows="4"
+                placeholder="Product description..."
                 class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm font-mono outline-none focus:border-black transition-colors resize-none"
-              >
-The ultimate iPhone features an Always-On display, the first-ever 48MP camera on iPhone, Crash Detection, Emergency SOS via satellite, and an innovative new way to receive notifications and activities with the Dynamic Island.</textarea
-              >
+              >{{ old('description', $product->description ?? '') }}</textarea>
             </div>
 
             <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2"
-                >Images (Min 2)</label
-              >
-              <div
-                class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer mb-4"
-              >
-                <p class="text-sm font-semibold text-gray-500">
-                  Click to upload or drag and drop files
-                </p>
-                <input type="file" multiple class="hidden" />
-              </div>
+              <label class="block text-xs font-bold uppercase tracking-widest mb-2">Main Image</label>
+              
+              @if(isset($product) && $product->primary_image)
+                  <div class="mb-4">
+                      <p class="text-xs text-gray-500 mb-1">Current Image:</p>
+                      <img src="{{ asset($product->primary_image) }}" class="w-24 h-24 object-cover rounded-lg border border-gray-200">
+                  </div>
+              @endif
 
-              <div class="flex gap-4">
-                <div
-                  class="relative w-24 h-24 border border-gray-200 rounded-lg overflow-hidden group"
-                >
-                  <img src="{{ asset('images/iPhone14_pro.jpg') }}" class="w-full h-full object-cover" alt="" />
-                  <button
-                    type="button"
-                    class="absolute top-1 right-1 bg-white border border-gray-200 rounded-md w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:border-red-400 hover:text-red-500"
-                  >
-                    <span class="text-xs font-bold">X</span>
-                  </button>
-                </div>
-                <div
-                  class="relative w-24 h-24 border border-gray-200 rounded-lg overflow-hidden group"
-                >
-                  <img src="{{ asset('images/iPhone13.jpg') }}" class="w-full h-full object-cover" alt="" />
-                  <button
-                    type="button"
-                    class="absolute top-1 right-1 bg-white border border-gray-200 rounded-md w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:border-red-400 hover:text-red-500"
-                  >
-                    <span class="text-xs font-bold">X</span>
-                  </button>
-                </div>
-              </div>
+              <label class="block border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer mb-4">
+                <p id="fileName" class="text-sm font-semibold text-gray-500">
+                  Click here to upload a new image
+                </p>
+                <input 
+                    type="file" 
+                    name="image" 
+                    class="hidden" 
+                    accept="image/*" 
+                    onchange="document.getElementById('fileName').innerText = 'Selected: ' + this.files[0].name"
+                />
+              </label>
             </div>
 
             <div class="border-t border-gray-200 pt-6 flex justify-end gap-3 mt-2">
@@ -151,7 +177,7 @@ The ultimate iPhone features an Always-On display, the first-ever 48MP camera on
                 >Cancel</a
               >
               <button
-                type="button"
+                type="submit"
                 class="px-8 py-3 rounded-lg text-sm font-bold bg-black text-white hover:bg-gray-800 transition-colors"
               >
                 Save Product

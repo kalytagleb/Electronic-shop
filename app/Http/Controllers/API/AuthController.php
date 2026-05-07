@@ -19,6 +19,17 @@ class AuthController extends Controller
         if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        $user = auth('api')->user();
+        
+        if (session()->has('cart') && count(session('cart')) > 0) {
+            $user->cart_data = json_encode(session('cart'));
+            $user->save();
+        } 
+        elseif ($user->cart_data) {
+            session()->put('cart', json_decode($user->cart_data, true));
+        }
+
         return $this->responseWithToken($token);
     }
 

@@ -6,6 +6,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\AdminProductController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -41,10 +44,37 @@ Route::get('/contacts', function () {
     return view('pages.contacts');
 })->name('contacts');
 
-Route::get('/admin/products', function () {
-    return view('pages.admin-products');
-})->name('admin.products');
+Route::post('/login', function (Illuminate\Http\Request $request) {
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-Route::get('/admin/products/form', function () {
-    return view('pages.admin-product-form');
-})->name('admin.product.form');
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.products');
+        }
+
+        return redirect()->intended('/');
+    }
+
+    return back()->withErrors(['email' => 'Invalid credentials']);
+})->name('login.post');
+
+Route::post('/logout', function(Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/');
+})->name('logout');
+
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/products', [AdminProductController::class, 'index'])->name('products');
+    Route::get('/products/create', [AdminProductController::class, 'create'])->name('product.create');
+    Route::post('/products', [AdminProductController::class, 'store'])->name('product.store');
+    Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('product.edit');
+    Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('product.update');
+    Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
+});
