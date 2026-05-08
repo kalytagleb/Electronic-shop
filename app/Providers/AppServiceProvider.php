@@ -15,6 +15,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::share('globalCategories', Category::all());
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('categories')) {
+                \Illuminate\Support\Facades\View::share('globalCategories', \App\Models\Category::all());
+            }
+        } catch (\Exception $e) {}
     }
 }

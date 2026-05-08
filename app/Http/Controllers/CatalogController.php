@@ -24,6 +24,10 @@ class CatalogController extends Controller
             $query->whereIn('color', $request->color);
         }
 
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
         if ($request->filled('max_price')) {
             $query->where('price', '<=', $request->max_price);
         }

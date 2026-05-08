@@ -232,23 +232,94 @@
 
                 <div id="price" class="filter-body open mt-3">
                   <div class="flex justify-between text-xs text-gray-500 mono mb-2">
-                    <span id="priceMin">$0</span>
-                    <span id="priceMax">${{ request('max_price', 1500) }}</span>
+                    <span id="priceMinLabel">${{ request('min_price', 0) }}</span>
+                    <span id="priceMaxLabel">${{ request('max_price', 2000) }}</span>
                   </div>
-                  <input type="hidden" name="min_price" value="0">
-                  <input
-                    type="range"
-                    name="max_price"
-                    min="0"
-                    max="1500"
-                    value="{{ request('max_price', 1500) }}"
-                    step="10"
-                    class="w-full accent-black cursor-pointer"
-                    oninput="document.getElementById('priceMax').textContent = '$' + this.value"
-                    onchange="this.form.submit()"
-                  />
+                  
+                  <div class="relative w-full h-1 bg-gray-200 rounded-full mt-4 mb-2">
+                    <div id="slider-track" class="absolute h-full bg-black rounded-full pointer-events-none"></div>
+                    
+                    <input 
+                      type="range" 
+                      name="min_price" 
+                      id="min_price" 
+                      min="0" 
+                      max="2000" 
+                      step="10"
+                      value="{{ request('min_price', 0) }}" 
+                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none" 
+                      oninput="updateSlider()"
+                      onchange="this.form.submit()"
+                    />
+                           
+                    <input 
+                      type="range" 
+                      name="max_price" 
+                      id="max_price" 
+                      min="0" 
+                      max="2000" 
+                      step="10"
+                      value="{{ request('max_price', 2000) }}" 
+                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none" 
+                      oninput="updateSlider()"
+                      onchange="this.form.submit()"
+                    />
+                  </div>
                 </div>
               </div>
+
+              <style>
+                input[type=range]::-webkit-slider-thumb {
+                    pointer-events: auto;
+                    appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    background: black;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+                input[type=range]::-moz-range-thumb {
+                    pointer-events: auto;
+                    width: 16px;
+                    height: 16px;
+                    background: black;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: none;
+                }
+              </style>
+
+              <script>
+                function updateSlider() {
+                    let minSlider = document.getElementById('min_price');
+                    let maxSlider = document.getElementById('max_price');
+                    let minLabel = document.getElementById('priceMinLabel');
+                    let maxLabel = document.getElementById('priceMaxLabel');
+                    let track = document.getElementById('slider-track');
+
+                    let minVal = parseInt(minSlider.value);
+                    let maxVal = parseInt(maxSlider.value);
+
+                    if (minVal > maxVal - 10) {
+                        if (event && event.target.id === 'min_price') {
+                            minSlider.value = maxVal - 10;
+                            minVal = parseInt(minSlider.value);
+                        } else {
+                            maxSlider.value = minVal + 10;
+                            maxVal = parseInt(maxSlider.value);
+                        }
+                    }
+
+                    minLabel.innerText = '$' + minVal;
+                    maxLabel.innerText = '$' + maxVal;
+
+                    let percent1 = (minVal / minSlider.max) * 100;
+                    let percent2 = (maxVal / maxSlider.max) * 100;
+                    track.style.left = percent1 + '%';
+                    track.style.right = (100 - percent2) + '%';
+                }
+                document.addEventListener("DOMContentLoaded", updateSlider);
+              </script>
               
               @if(request()->anyFilled(['brand', 'color', 'max_price', 'sort']))
                   <a href="{{ route('catalog') }}" class="block w-full text-center mt-6 text-sm font-semibold text-gray-500 hover:text-black transition-colors">

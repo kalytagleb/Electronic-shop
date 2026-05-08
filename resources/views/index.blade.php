@@ -98,9 +98,18 @@
           <img src="static/cart.svg" class="w-4 h-4" alt="" />
           Cart {{ session('cart') ? count(session('cart')) : 0 }}        
         </a>
-        <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60 transition-opacity"
-          >Log In</a
-        >
+        @guest
+          <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60">Log In</a>
+      @endguest
+      @auth
+          @if(auth()->user()->role === 'admin')
+              <a href="{{ route('admin.products') }}" class="text-sm font-bold text-red-600 hover:opacity-60">Admin Panel</a>
+          @endif
+          <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="text-sm font-semibold hover:opacity-60 text-left w-full">Log out</button>
+          </form>
+      @endauth
       </div>
 
       <button
@@ -142,8 +151,18 @@
       <hr class="border-gray-200" />
       <a href="#" class="text-sm font-semibold hover:opacity-60">Search</a>
       <a href="{{ route('cart') }}" class="text-sm font-semibold hover:opacity-60">Cart</a>
-      <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60">Log In</a>
-    </div>
+      @guest
+          <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60">Log In</a>
+      @endguest
+      @auth
+          @if(auth()->user()->role === 'admin')
+              <a href="{{ route('admin.products') }}" class="text-sm font-bold text-red-600 hover:opacity-60">Admin Panel</a>
+          @endif
+          <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="text-sm font-semibold hover:opacity-60 text-left w-full">Log out</button>
+          </form>
+      @endauth    </div>
 
     <main class="w-full px-8 2xl:px-16 py-8 flex flex-col gap-12">
       <section

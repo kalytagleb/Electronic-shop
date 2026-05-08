@@ -133,15 +133,19 @@
           >
         </p>
 
-        <form id="loginForm" class="w-full max-w-md">
-          <div class="mb-4">
+        <form action="{{ route('login.post') }}" method="POST" class="w-full max-w-md">
+          @csrf <div class="mb-4">
             <label class="block text-xs font-bold uppercase tracking-widest mb-2">Email</label>
             <input
               type="email"
-              id="loginEmail"
-              placeholder="kalytagleb@gmail.com"
+              name="email"  id="loginEmail"
+              placeholder="admin@gmail.com"
               class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors"
+              required
             />
+            @error('email')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
 
           <div class="mb-6">
@@ -153,10 +157,14 @@
             </div>
             <input
               type="password"
-              id="loginPassword"
+              name="password" id="loginPassword"
               placeholder="Your password"
               class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-gray-900 focus:bg-white transition-colors"
+              required
             />
+            @error('password')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
 
           <button

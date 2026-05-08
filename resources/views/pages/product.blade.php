@@ -11,6 +11,17 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="{{ asset('style.css') }}" />
+    <style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    </style>
   </head>
   <body class="bg-gray-100 text-gray-900">
     <nav
@@ -207,8 +218,7 @@
             <div class="flex items-center gap-4 mt-6">
                 <div class="flex items-center border border-gray-300 rounded-lg px-3 py-1">
                     <button type="button" onclick="changeQuantity(this, -1)" class="px-2 text-xl font-bold hover:text-gray-500">-</button>
-                    <span id="productQuantity" data-qty class="px-4 font-mono">1</span>
-                    <button type="button" onclick="changeQuantity(this, 1)" class="px-2 text-xl font-bold hover:text-gray-500">+</button>
+                    <input type="number" id="productQuantity" data-qty value="1" min="1" class="w-16 text-center font-mono border border-gray-200 rounded outline-none appearance-none" onchange="if(this.value < 1) this.value = 1;">                    <button type="button" onclick="changeQuantity(this, 1)" class="px-2 text-xl font-bold hover:text-gray-500">+</button>
                 </div>
 
                 <button type="button" onclick="addToCart(this, {{ $product->id }})" class="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2">
