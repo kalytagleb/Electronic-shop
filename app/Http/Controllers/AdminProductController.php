@@ -130,7 +130,12 @@ class AdminProductController extends Controller
 
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('images')->findOrFail($id);
+
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete(Str::after($image->image_url, 'storage/'));
+        }
+
         $product->delete();
 
         return redirect()->route('admin.products')->with('success', 'Product deleted!');

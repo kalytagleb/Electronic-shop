@@ -46,7 +46,7 @@
     @include('components.navbar')
 
 
-    <main class="w-full 2xl:px-16 px-8 py-8">
+    <main class="w-full 2xl:px-16 md:px-8 px-4 py-8">
       <h1 class="text-3xl font-extrabold tracking-tight mb-6">Shopping Cart</h1>
       <div class="flex flex-col md:flex-row gap-6 items-start">
         <div class="flex-1 flex flex-col gap-3">

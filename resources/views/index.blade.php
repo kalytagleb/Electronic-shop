@@ -116,8 +116,7 @@
       <button
         id="burgerBtn"
         onclick="toggleMobileMenu()"
-        class="md:hidden flex flex-col gap-1.5"
-        p-2
+        class="md:hidden flex flex-col gap-1.5 p-2"
       >
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
         <span class="w-5 h-0.5 bg-gray-900 block transition-all"></span>
@@ -150,7 +149,9 @@
         </div>
       </div>
       <hr class="border-gray-200" />
-      <a href="#" class="text-sm font-semibold hover:opacity-60">Search</a>
+      <form action="{{ route('catalog') }}" method="GET">
+        <input type="text" name="search" placeholder="Search products..." class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono outline-none focus:border-gray-900" />
+      </form>
       <a href="{{ route('cart') }}" class="text-sm font-semibold hover:opacity-60">Cart</a>
       @guest
           <a href="{{ route('login') }}" id="navLoginLink" class="text-sm font-semibold hover:opacity-60">Log In</a>
