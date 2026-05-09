@@ -104,5 +104,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::post('/products', [AdminProductController::class, 'store'])->name('product.store');
     Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('product.edit');
     Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('product.update');
-    Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
+    Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
+    Route::delete('/products/{productId}/images/{imageId}', [AdminProductController::class, 'destroyImage'])->name('product.image.destroy');
+    Route::patch('/products/{productId}/images/{imageId}/primary', [AdminProductController::class, 'setPrimaryImage'])->name('product.image.primary');
 });
