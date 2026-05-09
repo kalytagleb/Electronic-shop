@@ -75,7 +75,8 @@
         </div>
 
         <div id="adminProductsTable" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-          <table class="w-full text-left border-collapse">
+          <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[500px]">
             <thead>
               <tr
                 class="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500 font-bold"
@@ -120,7 +121,8 @@
               @endforelse
             </tbody>
           </table>
-          
+          </div>
+
           @if(method_exists($products, 'links'))
             <div class="p-4 border-t border-gray-200">
                 {{ $products->links() }}

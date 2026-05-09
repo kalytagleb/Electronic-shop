@@ -147,6 +147,24 @@ async function addToCart(btn, productId) {
 }
 
 
+function openSearch() {
+    const searchWrapper = document.getElementById('searchWrapper');
+    const searchInput = document.getElementById('searchInput');
+    if (!searchWrapper || !searchInput) return;
+    searchWrapper.classList.remove('opacity-0', 'pointer-events-none', 'translate-x-4');
+    searchWrapper.classList.add('opacity-100', 'pointer-events-auto', 'translate-x-0');
+    setTimeout(() => searchInput.focus(), 100);
+}
+
+function closeSearch() {
+    const searchWrapper = document.getElementById('searchWrapper');
+    const searchInput = document.getElementById('searchInput');
+    if (!searchWrapper) return;
+    searchWrapper.classList.add('opacity-0', 'pointer-events-none', 'translate-x-4');
+    searchWrapper.classList.remove('opacity-100', 'pointer-events-auto', 'translate-x-0');
+    if (searchInput) searchInput.blur();
+}
+
 async function logoutUser() {
     const token = localStorage.getItem('jwt_token');
     if (token) {
@@ -238,22 +256,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchToggleBtn = document.getElementById('searchToggleBtn');
     const searchWrapper = document.getElementById('searchWrapper');
     const searchInput = document.getElementById('searchInput');
-    let isSearchOpen = false;
 
     if (searchToggleBtn && searchWrapper && searchInput) {
         searchToggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            isSearchOpen = !isSearchOpen;
-
-            if (isSearchOpen) {
-                searchWrapper.classList.remove('opacity-0', 'pointer-events-none', 'translate-x-4');
-                searchWrapper.classList.add('opacity-100', 'pointer-events-auto', 'translate-x-0');
-                setTimeout(() => searchInput.focus(), 100);
+            if (searchWrapper.classList.contains('opacity-0')) {
+                openSearch();
             } else {
-                searchWrapper.classList.add('opacity-0', 'pointer-events-none', 'translate-x-4');
-                searchWrapper.classList.remove('opacity-100', 'pointer-events-auto', 'translate-x-0');
-                searchInput.blur();
+                closeSearch();
             }
         });
 
@@ -262,7 +273,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) {
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('search')) searchInput.value = urlParams.get('search');
+        if (urlParams.has('search')) {
+            searchInput.value = urlParams.get('search');
+            openSearch();
+        }
 
         let searchTimeout = null;
         searchInput.addEventListener('input', function () {
@@ -321,9 +335,8 @@ document.addEventListener('click', (e) => {
         mobileMenu.classList.remove('open');
     }
 
-    const searchInput = document.getElementById('searchInput');
     const searchWrapper = document.getElementById('searchWrapper');
-    if (searchInput && searchWrapper && !searchWrapper.contains(e.target)) {
-        searchInput.blur();
+    if (searchWrapper && !searchWrapper.classList.contains('opacity-0') && !searchWrapper.contains(e.target)) {
+        closeSearch();
     }
 });
