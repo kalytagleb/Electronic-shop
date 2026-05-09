@@ -147,25 +147,71 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold uppercase tracking-widest mb-2">Main Image</label>
-              
-              @if(isset($product) && $product->primary_image)
-                  <div class="mb-4">
-                      <p class="text-xs text-gray-500 mb-1">Current Image:</p>
-                      <img src="{{ asset($product->primary_image) }}" class="w-24 h-24 object-cover rounded-lg border border-gray-200">
-                  </div>
+              <label class="block text-xs font-bold uppercase tracking-widest mb-3">
+                Photos
+                @if(!isset($product))
+                  <span class="text-gray-400 normal-case font-normal">(minimum 2)</span>
+                @endif
+              </label>
+
+              @if(isset($product) && $product->images->count() > 0)
+                <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
+                  @foreach($product->images as $image)
+                    <div class="relative group">
+
+                      <img src="{{ asset($image->image_url) }}"
+                           class="w-full aspect-square object-cover rounded-xl border-2 {{ $image->is_primary ? 'border-black' : 'border-gray-200' }}">
+
+                      @if($image->is_primary)
+                        <span class="absolute top-1 left-1 bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+                          Main
+                        </span>
+                      @endif
+
+                      <div class="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+
+                        @if(!$image->is_primary)
+                          <form action="{{ route('admin.product.image.primary', [$product->id, $image->id]) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="bg-white text-black text-[11px] font-bold px-3 py-1 rounded-lg hover:bg-gray-100">
+                              Set main
+                            </button>
+                          </form>
+                        @endif
+
+                        <form action="{{ route('admin.product.image.destroy', [$product->id, $image->id]) }}" method="POST"
+                              onsubmit="return confirm('Delete this photo?')">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="bg-red-500 text-white text-[11px] font-bold px-3 py-1 rounded-lg hover:bg-red-600">
+                            Delete
+                          </button>
+                        </form>
+
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
               @endif
 
-              <label class="block border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer mb-4">
+              <label class="block border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
                 <p id="fileName" class="text-sm font-semibold text-gray-500">
-                  Click here to upload a new image
+                  {{ isset($product) ? 'Click to add more photos' : 'Click to upload photos (min. 2)' }}
                 </p>
-                <input 
-                    type="file" 
-                    name="image" 
-                    class="hidden" 
-                    accept="image/*" 
-                    onchange="document.getElementById('fileName').innerText = 'Selected: ' + this.files[0].name"
+                <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP — max 2 MB each</p>
+                <input
+                  type="file"
+                  name="images[]"
+                  class="hidden"
+                  accept="image/*"
+                  multiple
+                  onchange="
+                    const n = this.files.length;
+                    document.getElementById('fileName').innerText = n === 1
+                      ? 'Selected: ' + this.files[0].name
+                      : 'Selected ' + n + ' photos';
+                  "
                 />
               </label>
             </div>
