@@ -14,7 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 
-Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product');
 
 Route::get('/best-deals', function () {
     return view('pages.best-deals');
@@ -44,7 +44,7 @@ Route::get('/contacts', function () {
     return view('pages.contacts');
 })->name('contacts');
 
-Route::post('/login', function (Illuminate\Http\Request $request) {
+Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
@@ -53,7 +53,28 @@ Route::post('/login', function (Illuminate\Http\Request $request) {
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 
-        if (Auth::user()->role === 'admin') {
+        $user = Auth::user();
+
+        $sessionCart = session('cart', []);
+        $savedCart = $user->cart_data ? json_decode($user->cart_data, true) : [];
+
+        if (!empty($sessionCart)) {
+            foreach ($sessionCart as $id => $item) {
+                if (isset($savedCart[$id])) {
+                    $savedCart[$id]['quantity'] += $item['quantity'];
+                } else {
+                    $savedCart[$id] = $item;
+                }
+            }
+        }
+
+        $mergedCart = !empty($savedCart) ? $savedCart : $sessionCart;
+
+        session()->put('cart', $mergedCart);
+        $user->cart_data = json_encode($mergedCart);
+        $user->save();
+
+        if ($user->role === 'admin') {
             return redirect()->route('admin.products');
         }
 
@@ -64,6 +85,13 @@ Route::post('/login', function (Illuminate\Http\Request $request) {
 })->name('login.post');
 
 Route::post('/logout', function(Request $request) {
+    // Save current cart
+    $user = Auth::user();
+    if ($user) {
+        $user->cart_data = json_encode(session('cart', []));
+        $user->save();
+    }
+
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
