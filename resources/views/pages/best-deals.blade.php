@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Best Deals - Electronic shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -61,6 +62,9 @@
               >-17%</span
             >
             <button
+              type="button"
+              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this, this.dataset.id)"
+              data-id="1"
               class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
             >
               <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Cart" />
@@ -92,6 +96,9 @@
               >-25%</span
             >
             <button
+              type="button"
+              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this, this.dataset.id)"
+              data-id="2"
               class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
             >
               <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Cart" />
@@ -125,6 +132,9 @@
               >-15%</span
             >
             <button
+              type="button"
+              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this, this.dataset.id)"
+              data-id="3"
               class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
             >
               <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Cart" />
@@ -156,6 +166,9 @@
               >-30%</span
             >
             <button
+              type="button"
+              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this, this.dataset.id)"
+              data-id="4"
               class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
             >
               <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Cart" />

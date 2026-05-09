@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Electronic shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{asset('style.css')}}" />
@@ -278,14 +279,13 @@
               <span class="absolute top-2 left-2 bg-black text-white text-xs font-bold px-3 py-1 rounded-full">
                   {{ $product->category->name ?? 'NEW' }}
               </span>
-              <form action="{{ route('cart.add') }}" method="POST" class="absolute top-2 right-2">
-                  @csrf
-                  <input type="hidden" name="product_id" value="{{ $product->id }}">
-                  <input type="hidden" name="quantity" value="1">
-                  <button type="submit" onclick="event.stopPropagation();" class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700">
-                    <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Add to cart" />
-                  </button>
-              </form>
+              <button
+                type="button"
+                onclick="event.preventDefault(); event.stopPropagation(); addToCart(this, {{ $product->id }})"
+                class="absolute top-2 right-2 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+              >
+                <img src="{{ asset('static/cart_catalog.svg') }}" class="w-4 h-4" alt="Add to cart" />
+              </button>
             </div>
             <div class="p-3 text-center">
               <p class="text-sm font-semibold text-gray-900">{{ $product->name }}</p>
