@@ -124,35 +124,35 @@
 
                 <div id="price" class="filter-body open mt-3">
                   <div class="flex justify-between text-xs text-gray-500 mono mb-2">
-                    <span id="priceMinLabel">${{ request('min_price', 0) }}</span>
-                    <span id="priceMaxLabel">${{ request('max_price', 2000) }}</span>
+                    <span id="priceMinLabel">${{ request('min_price', $priceMin) }}</span>
+                    <span id="priceMaxLabel">${{ request('max_price', $priceMax) }}</span>
                   </div>
-                  
+
                   <div class="relative w-full h-1 bg-gray-200 rounded-full mt-4 mb-2">
                     <div id="slider-track" class="absolute h-full bg-black rounded-full pointer-events-none"></div>
-                    
-                    <input 
-                      type="range" 
-                      name="min_price" 
-                      id="min_price" 
-                      min="0" 
-                      max="2000" 
-                      step="10"
-                      value="{{ request('min_price', 0) }}" 
-                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none" 
+
+                    <input
+                      type="range"
+                      name="min_price"
+                      id="min_price"
+                      min="{{ $priceMin }}"
+                      max="{{ $priceMax }}"
+                      step="1"
+                      value="{{ request('min_price', $priceMin) }}"
+                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none"
                       oninput="updateSlider()"
                       onchange="this.form.submit()"
                     />
-                           
-                    <input 
-                      type="range" 
-                      name="max_price" 
-                      id="max_price" 
-                      min="0" 
-                      max="2000" 
-                      step="10"
-                      value="{{ request('max_price', 2000) }}" 
-                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none" 
+
+                    <input
+                      type="range"
+                      name="max_price"
+                      id="max_price"
+                      min="{{ $priceMin }}"
+                      max="{{ $priceMax }}"
+                      step="1"
+                      value="{{ request('max_price', $priceMax) }}"
+                      class="absolute w-full h-1 appearance-none bg-transparent pointer-events-none"
                       oninput="updateSlider()"
                       onchange="this.form.submit()"
                     />
