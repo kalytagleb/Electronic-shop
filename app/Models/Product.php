@@ -24,6 +24,6 @@ class Product extends Model
     public function getPrimaryImageAttribute()
     {
         $primary = $this->images->where('is_primary', true)->first();
-        return $primary ? $primary->image_url : 'static/placeholder.png';
+        return $primary ? $primary->image_url : 'images/placeholder.jpg';
     }
 }

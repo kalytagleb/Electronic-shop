@@ -210,7 +210,7 @@
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
-              <img src="static/laptops.svg" class="w-10 h-10 opacity-20" alt="" />
+              <img src="images/macbook_air_m2.jpg" class="w-full h-full object-cover" alt="" />
             </div>
             <div class="p-2 text-center">
               <span class="text-xs font-bold uppercase tracking-wider">Laptops</span>
@@ -222,7 +222,7 @@
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
-              <img src="static/monitors.svg" class="w-10 h-10 opacity-20" alt="" />
+              <img src="images/asus_tuf_monitor.jpg" class="w-full h-full object-cover" alt="" />
             </div>
             <div class="p-2 text-center">
               <span class="text-xs font-bold uppercase tracking-wider">Monitors</span>
@@ -234,7 +234,7 @@
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
-              <img src="static/audio.svg" class="w-10 h-10 opacity-20" alt="" />
+              <img src="images/airpods_pro.jpg" class="w-full h-full object-cover" alt="" />
             </div>
             <div class="p-2 text-center">
               <span class="text-xs font-bold uppercase tracking-wider">Audio</span>
@@ -246,7 +246,7 @@
             class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
-              <img src="static/accessories.svg" class="w-10 h-10 opacity-20" alt="" />
+              <img src="images/accessories.webp" class="w-full h-full object-cover" alt="" />
             </div>
             <div class="p-2 text-center">
               <span class="text-xs font-bold uppercase tracking-wider">Accessories</span>
